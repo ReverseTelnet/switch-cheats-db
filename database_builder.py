@@ -191,10 +191,13 @@ if __name__ == '__main__':
         archive_worker.download_archive(highfps.get_download_url(), archive_path)
         archive_worker.extract_archive(archive_path)
 
-        print("Processing the cheat sheets")
+        print('Processing: gbatemp/titles --> cheats_gbatemp')
         process_cheats.ProcessCheats("gbatemp/titles", cheats_gba_path)
+        print('Processing: NX-60FPS-RES-GFX-Cheats-main/titles --> cheats_gfx')
         process_cheats.ProcessCheats("NX-60FPS-RES-GFX-Cheats-main/titles", cheats_gfx_path)
+        print('Processing: gbatemp/titles --> cheats')
         process_cheats.ProcessCheats("gbatemp/titles", cheats_path) # this could be done more elegantly
+        print('Processing: NX-60FPS-RES-GFX-Cheats-main/titles --> cheats')
         process_cheats.ProcessCheats("NX-60FPS-RES-GFX-Cheats-main/titles", cheats_path)
 
         print("building complete cheat sheets")
@@ -205,9 +208,11 @@ if __name__ == '__main__':
            pass
         archive_worker.build_cheat_files(cheats_path, out_path)
 
-        print("Creating the archives")
+        print('Creating: Complete Final Archive')
         archive_worker.create_archives("complete")
+        print('Creating: NX-60FPS-RES-GFX-Cheats-main Final Archive')
         archive_worker.create_archives("NX-60FPS-RES-GFX-Cheats-main")
+        print('Creating: gbatemp Final Archive')
         archive_worker.create_archives("gbatemp")
 
         archive_worker.create_version_file()
