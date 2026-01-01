@@ -37,7 +37,13 @@ class DatabaseInfo:
 
 class GbatempCheatsInfo:
     def __init__(self):
-        self.scraper = cloudscraper.create_scraper()
+        self.scraper = cloudscraper.create_scraper(
+            browser = {
+                "browser": "chrome",
+                "platform": "windows",
+                "desktop": True,
+                }
+        )
         self.page_url = 'https://gbatemp.net/download/cheat-codes-sxos-and-ams-main-cheat-file-updated.36311'
         self.updates_url = 'https://gbatemp.net/download/cheat-codes-sxos-and-ams-main-cheat-file-updated.36311/updates'
         self.downloads_url = 'https://gbatemp.net/download/cheat-codes-sxos-and-ams-main-cheat-file-updated.36311/download'
