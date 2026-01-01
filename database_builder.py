@@ -37,11 +37,13 @@ class DatabaseInfo:
 class GbatempCheatsInfo:
     def __init__(self):
         self.scraper = cloudscraper.create_scraper()
-        self.page_url = "https://gbatemp.net/download/cheat-codes-sxos-and-ams-main-cheat-file-updated.36311/"
-        self.gbatemp_version = self.fetch_gbatemp_version()
+        self.page_url = 'https://gbatemp.net/download/cheat-codes-sxos-and-ams-main-cheat-file-updated.36311'
+        self.updates_url = 'https://gbatemp.net/download/cheat-codes-sxos-and-ams-main-cheat-file-updated.36311/updates'
+        self.downloads_url = 'https://gbatemp.net/download/cheat-codes-sxos-and-ams-main-cheat-file-updated.36311/download'
+        # self.gbatemp_version = self.fetch_gbatemp_version()
 
     def fetch_gbatemp_version(self):
-        page = self.scraper.get(f"{self.page_url}/updates")
+        page = self.scraper.get(self.updates_url)
         soup = BeautifulSoup(page.content, "html.parser")
         dates = soup.find("div", {"class": "block-container"}).find_all("time", {"class": "u-dt"})
         version = max([datetime.fromisoformat(date.get("datetime")) for date in dates])
