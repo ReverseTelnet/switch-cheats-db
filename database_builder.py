@@ -198,6 +198,7 @@ if __name__ == '__main__':
         archive_worker = ArchiveWorker()
         print(f"Downloading cheats")
         gbatemp_dl = archive_worker.download_archive(gbatemp.get_download_url())
+        print(f'Status Code: {gbatemp_dl.status_code}')
         print(archive_worker.get_hash_digest(gbatemp_dl.content))
         archive_worker.save_archive(gbatemp_dl, archive_path)
         archive_worker.extract_archive(archive_path, "gbatemp")
