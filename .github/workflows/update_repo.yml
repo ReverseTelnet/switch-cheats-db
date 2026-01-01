@@ -60,6 +60,9 @@ jobs:
       - name: install dependencies
         run: sudo apt-get install unrar
 
+      - name: instantiate playwright
+        run: playwright install
+
       - name: run python script
         run: |
           python3 database_builder.py
