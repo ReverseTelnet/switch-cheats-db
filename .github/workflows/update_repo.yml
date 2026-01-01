@@ -65,7 +65,7 @@ jobs:
         run: sudo apt-get install unrar
 
       - name: install playwright dependencies
-        run: sudo playwright install-deps
+        run: which playwright
 
       - name: instantiate playwright
         run: playwright install chromium firefox webkit
