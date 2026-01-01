@@ -90,10 +90,14 @@ class ArchiveWorker():
     def __init__(self):
         self.scraper = cloudscraper.create_scraper()
 
-    def download_archive(self, url, path):
+    def download_archive(self, url):
         dl = self.scraper.get(url, allow_redirects=True)
-        open(path, "wb").write(dl.content)
+        # open(path, "wb").write(dl.content)
+        return dl
 
+    def save_archive(self, dl, path):
+        open(path, "wb").write(dl.content)
+        
     def extract_archive(self, path, extract_path=None):
         if rarfile.is_rarfile(path):
             rf = rarfile.RarFile(path)
@@ -186,9 +190,11 @@ if __name__ == '__main__':
     if True:
         archive_worker = ArchiveWorker()
         print(f"Downloading cheats")
-        archive_worker.download_archive(gbatemp.get_download_url(), archive_path)
+        gbatemp_dl = archive_worker.download_archive(gbatemp.get_download_url())
+        archive_worker.save_archive(gbatemp_dl, archive_path)
         archive_worker.extract_archive(archive_path, "gbatemp")
-        archive_worker.download_archive(highfps.get_download_url(), archive_path)
+        high_fps_dl = archive_worker.download_archive(highfps.get_download_url())
+        archive_worker.save_archive(high_fps_dl, archive_path)
         archive_worker.extract_archive(archive_path)
 
         print('Processing: gbatemp/titles --> cheats_gbatemp')
