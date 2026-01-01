@@ -57,7 +57,7 @@ class GbatempCheatsInfo:
         return self.gbatemp_version
 
     def get_download_url(self):
-        return f"{self.page_url}/download"
+        return self.downloads_url
 
 
 class HighFPSCheatsInfo:
