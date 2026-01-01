@@ -14,6 +14,9 @@ import hashlib
 import process_cheats
 
 
+from playwright.sync_api import sync_playwright
+
+
 def version_parser(version):
     year = int(version[4:8])
     month = int(version[0:2])
@@ -110,7 +113,23 @@ class ArchiveWorker():
         hasher = getattr(hashlib, hash_algorithm)()
         hasher.update(contents)
         return hasher.hexdigest()
-        
+
+    def download_gbatemp_archive(self):
+        with sync_playwright() as p:
+            for browser_type in [p.chromium, p.firefox, p.webkit]:
+                browser = browser_type.launch()
+                page = browser.new_page()
+                file_url = f'https://gbatemp.net/download/cheat-codes-sxos-and-ams-main-cheat-file-updated.36311/download'
+                response = self.scraper.get(file_url)
+                if response.status_code == 200:
+                    with open('titles.zip', 'wb') as f:
+                        f.write(response.content)
+                    print('File downloaded successfully')
+                else:
+                    print(response.status_code)
+                browser.close()
+
+
     def extract_archive(self, path, extract_path=None):
         if rarfile.is_rarfile(path):
             rf = rarfile.RarFile(path)
@@ -203,10 +222,11 @@ if __name__ == '__main__':
     if True:
         archive_worker = ArchiveWorker()
         print(f"Downloading cheats")
-        gbatemp_dl = archive_worker.download_archive(gbatemp.get_download_url())
-        print(f'Status Code: {gbatemp_dl.status_code}')
-        print(archive_worker.get_hash_digest(gbatemp_dl.content))
-        archive_worker.save_archive(gbatemp_dl, archive_path)
+        # gbatemp_dl = archive_worker.download_archive(gbatemp.get_download_url())
+        # print(f'Status Code: {gbatemp_dl.status_code}')
+        # print(archive_worker.get_hash_digest(gbatemp_dl.content))
+        # archive_worker.save_archive(gbatemp_dl, archive_path)
+        archive_worker.download_gbatemp_archive()
         archive_worker.extract_archive(archive_path, "gbatemp")
         high_fps_dl = archive_worker.download_archive(highfps.get_download_url())
         print(archive_worker.get_hash_digest(high_fps_dl.content))
