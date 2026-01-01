@@ -9,6 +9,7 @@ from pathlib import Path
 from datetime import date, datetime
 from bs4 import BeautifulSoup
 import os
+import hashlib
 
 import process_cheats
 
@@ -97,6 +98,12 @@ class ArchiveWorker():
 
     def save_archive(self, dl, path):
         open(path, "wb").write(dl.content)
+
+    def get_hash_digest(self, contents: bytes, hash_algorithm='sha256') -> str:
+        '''Get a hex digest representing a hash of the given contents.'''
+        hasher = getattr(hashlib, hash_algorithm)()
+        hasher.update(contents)
+        return hasher.hexdigest()
         
     def extract_archive(self, path, extract_path=None):
         if rarfile.is_rarfile(path):
@@ -191,9 +198,11 @@ if __name__ == '__main__':
         archive_worker = ArchiveWorker()
         print(f"Downloading cheats")
         gbatemp_dl = archive_worker.download_archive(gbatemp.get_download_url())
+        print(archive_worker.get_hash_digest(gbatemp_dl.content))
         archive_worker.save_archive(gbatemp_dl, archive_path)
         archive_worker.extract_archive(archive_path, "gbatemp")
         high_fps_dl = archive_worker.download_archive(highfps.get_download_url())
+        print(archive_worker.get_hash_digest(high_fps_dl.content))
         archive_worker.save_archive(high_fps_dl, archive_path)
         archive_worker.extract_archive(archive_path)
 
