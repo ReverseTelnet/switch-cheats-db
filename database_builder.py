@@ -98,7 +98,7 @@ class HighFPSCheatsInfo:
 
 class ArchiveWorker():
     def __init__(self):
-        self.scraper = cloudscraper.create_scraper()
+        self.scraper = cloudscraper.create_scraper(debug=True)
 
     def download_archive(self, url):
         dl = self.scraper.get(url, allow_redirects=True)
